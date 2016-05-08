@@ -1,9 +1,7 @@
 import React, { PropTypes } from 'react';
 import { branch } from 'baobab-react/higher-order';
 import isogram from 'isogram';
-import Highlight from 'react-highlight';
 
-import 'highlight.js/styles/github-gist.css';
 
 function IsogramOutput({ isogramConfig }) {
   const { letters } = isogramConfig;
@@ -22,10 +20,12 @@ function IsogramOutput({ isogramConfig }) {
   };
 
   return (
-    <div className="outputContainer" onClick={handleClick}>
-      <Highlight className="javascript">
-        {isogramCode}
-      </Highlight>
+    <div className="container--output">
+      <div className="container--isogram" onClick={handleClick}>
+        <pre className="isogram-code">
+          {isogramCode}
+        </pre>
+      </div>
     </div>
   );
 }
