@@ -4,7 +4,7 @@ import IsogramOutput from './IsogramOutput';
 
 function App() {
   return (
-    <div>
+    <div className="container container--app">
       <ConfigForm />
       <IsogramOutput />
     </div>

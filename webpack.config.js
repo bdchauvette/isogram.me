@@ -1,11 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const cssnext = require('postcss-cssnext');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const isProduction = (NODE_ENV === 'production');
 
+const extractStylesPlugin = new ExtractTextPlugin(
+  'main.css',
+  { allChunks: true }
+);
+
 const config = {
+  // devtool: 'cheap-module-eval-source-map',
   entry: {
     app: path.join(__dirname, 'src/index.js'),
     vendor: [
@@ -32,22 +39,24 @@ const config = {
       },
       {
         test: /\.css?$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'raw-loader'),
+        loader: extractStylesPlugin.extract(
+          'style-loader',
+          ['css-loader', 'postcss-loader']
+        ),
         include: __dirname,
       },
     ],
   },
+  postcss: () => [cssnext],
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
-    new ExtractTextPlugin('main.css', { allChunks: true }),
+    extractStylesPlugin,
   ],
 };
 
-if (!isProduction) {
-  Object.assign(config, {
-    devtool: 'cheap-module-eval-source-map',
-  });
+if (isProduction) {
+  config.devtool = undefined;
 }
 
 module.exports = config;

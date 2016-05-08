@@ -1,3 +1,9 @@
+import 'normalize.css';
+import './styles/app.css';
+import './styles/social.css';
+
+// =============================================================================
+
 import React from 'react';
 import { render } from 'react-dom';
 import { root } from 'baobab-react/higher-order';

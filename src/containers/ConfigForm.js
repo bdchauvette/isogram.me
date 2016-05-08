@@ -22,68 +22,66 @@ export function ConfigForm({ dispatch, fields }) {
   };
 
   return (
-    <form className="form--config">
-      <div className="form__row">
-        <Textbox
-          label="Letters"
-          value={fields.letters}
-          onChange={handleFormChange('letters')}
-        />
-      </div>
-      <div className="form__row">
-        <Textbox
-          label="Global Analytics Variable Name"
-          value={fields.globalName}
-          onChange={handleFormChange('globalName')}
-        />
-      </div>
-      <div className="form__row">
-        <RadioGroup name="quotes" onChange={handleFormChange('quotes')}>
-          <RadioOption
-            label="Use Single Quotes"
-            value="single"
-            checked={fields.quotes === 'single'}
-          />
-          <RadioOption
-            label="Use Double Quotes"
-            value="double"
-            checked={fields.quotes === 'double'}
-          />
-        </RadioGroup>
-      </div>
-      <div className="form__row">
-        <Checkbox
-          label="Minify Output"
-          checked={fields.minify}
-          onChange={handleFormChange('minify')}
-        />
-      </div>
-      <div className="form__row">
-        <Checkbox
-          label="Add page view sending code"
-          checked={fields.track}
-          onChange={handleFormChange('track')}
-        />
-      </div>
-      <Maybe condition={fields.track}>
+    <div className="container container--config">
+      <form className="form--config">
         <div className="form__row">
           <Textbox
-            label="GA Web Property ID"
+            label="Letters"
+            value={fields.letters}
+            onChange={handleFormChange('letters')}
+          />
+        </div>
+        <div className="form__row">
+          <Textbox
+            label="Google Analytics Global Variable Name"
+            value={fields.globalName}
+            onChange={handleFormChange('globalName')}
+          />
+        </div>
+        <div className="form__row">
+          <RadioGroup name="quotes" onChange={handleFormChange('quotes')}>
+            <RadioOption
+              label="Use Single Quotes"
+              value="single"
+              checked={fields.quotes === 'single'}
+            />
+            <RadioOption
+              label="Use Double Quotes"
+              value="double"
+              checked={fields.quotes === 'double'}
+            />
+          </RadioGroup>
+        </div>
+        <div className="form__row">
+          <Checkbox
+            label="Minify Output"
+            checked={fields.minify}
+            onChange={handleFormChange('minify')}
+          />
+        </div>
+        <div className="form__row">
+          <Checkbox
+            label="Include code to send page view"
+            checked={fields.track}
+            onChange={handleFormChange('track')}
+          />
+        </div>
+        <Maybe className="form__row" condition={fields.track}>
+          <Textbox
+            label="Google Analytics Web Property ID"
             value={fields.id}
             onChange={handleFormChange('id')}
           />
-        </div>
-      </Maybe>
-      <Maybe condition={fields.track}>
-        <div className="form__row">
+        </Maybe>
+        <Maybe className="form__row" condition={fields.track}>
           <Textbox
             label="Site Domain"
             value={fields.domain}
             onChange={handleFormChange('domain')}
           />
-        </div>
-      </Maybe>
-    </form>
+        </Maybe>
+      </form>
+    </div>
   );
 }
 

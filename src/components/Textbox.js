@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 
 function Textbox(props) {
   const {
@@ -8,13 +9,13 @@ function Textbox(props) {
     onChange,
   } = props;
 
-  const classNames = {
+  const classes = classNames({
     'textbox': true,
     'textbox--has-text': value,
-  };
+  });
 
   return (
-    <div className={classNames}>
+    <div className={classes}>
       <input
         type="text"
         placeholder={placeholder}

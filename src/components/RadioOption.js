@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 function RadioOption({ group, label, value, checked, onChange }) {
   return (
-    <label>
+    <label className="label--radio">
       <input
         type="radio"
         name={group}

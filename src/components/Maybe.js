@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 
-function Maybe({ condition, children }) {
+function Maybe({ className, condition, children }) {
   if (!condition) {
     return null;
   }
 
   return (
-    <div>
+    <div className={className}>
       {children}
     </div>
   );
