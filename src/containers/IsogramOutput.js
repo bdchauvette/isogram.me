@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
 import { branch } from 'baobab-react/higher-order';
 import isogram from 'isogram';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
+import Maybe from '../components/Maybe';
 
 function IsogramOutput({ isogramConfig }) {
   const { letters } = isogramConfig;
@@ -26,6 +28,17 @@ function IsogramOutput({ isogramConfig }) {
           {isogramCode}
         </pre>
       </div>
+      <Maybe condition={!!isogramCode}>
+        <div className="container--clipboard">
+          <CopyToClipboard
+            text={isogramCode}
+            onCopy={() => alert('Copied!')}
+          >
+            <button className="btn--clipboard">Copy to Clipboard</button>
+          </CopyToClipboard>
+          <span>or triple-click the colored area above to select the code</span>
+        </div>
+      </Maybe>
     </div>
   );
 }
