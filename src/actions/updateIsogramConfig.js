@@ -1,5 +1,5 @@
 function updateIsogramConfig(tree, field, newValue) {
-  tree.set(['isogram', field], newValue);
+  tree.set(['isogramConfig', field], newValue);
   tree.commit();
 }
 

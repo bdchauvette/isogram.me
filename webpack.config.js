@@ -21,7 +21,6 @@ const config = {
       'isogram',
       'react',
       'react-dom',
-      'react-highlight',
     ],
   },
   output: {

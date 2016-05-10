@@ -2,32 +2,126 @@
  * Variables
  * -------------------------------------------------------------------------- */
 :root {
-  --textbox-padding-vert: .75rem;
-  --textbox-padding-horiz: 1rem;
-
   /* Material Colors */
+  --color-yellow-a400: #ffea00;
+  --color-yellow-a700: #ffd600;
+  --color-amber-a700: #ffab00;
+
   --color-light-blue-50: #e1f5fe;
   --color-light-blue-100: #b3e5fc;
   --color-light-blue-200: #81d4fa;
   --color-light-blue-700: #039be5;
   --color-light-blue-900: #01579b;
-
   --color-blue-gray-900: #263238;
 
-  --color-yellow-a400: #ffea00;
-  --color-yellow-a700: #ffd600;
+  --color-deep-purple-700: #6200ea;
+
+  --color-red-50: #ffebee;
+  --color-red-a400: #ff1744;
+  --color-red-a200: #ff5252;
+  --color-red-a700: #d50000;
+  --color-brown-900: #3e2723;
 
   --color-gray-100: #e0e0e0;
   --color-gray-500: #9e9e9e;
   --color-gray-700: #616161;
 
+  --color-black: #212121;
+
+  --box-shadow: 0 4px 4px 2px;
+  --inset-shadow: inset 0 2px 2px 0;
+
+  --color-shadow-brown:  color(var(--color-brown-900) alpha(15%));
+  --color-shadow-light-blue: color(var(--color-light-blue-900) alpha(15%));
+  --color-shadow-blue-gray: color(var(--color-blue-gray-900) alpha(15%));
+
   --font-copy: 'Roboto', sans-serif;
   --font-mono: 'Roboto Mono', monospace;
+
+  --textbox-padding-vert: .75rem;
+  --textbox-padding-horiz: 1rem;
+  --textbox-height: 3rem;
+
+  --form-row-margin-vert--small-up: 1.5rem;
+  --form-row-margin-vert--large-up: 1rem;
+
+  --min-site-width: 320px;
+  --max-site-width: 900px;
+
+  --golden-large: 75%;
+  --golden-small: 25%;
 }
+
+/* =============================================================================
+ * Grid
+ * -----------------------------------------------------------------------------
+ * Note that We only include the grid sizes we actually need for our layout.
+ */
+.column {
+  flex-basis: 100%;
+}
+
+@media (min-width: 480px) {
+  .column.half--md {
+      flex-basis: 48%;
+  }
+}
+
+@media (min-width: 800px) {
+   .column.one-qtr--lg {
+     flex-basis: 25%;
+     max-width: 75%;
+   }
+
+   .column.three-qtr--lg {
+     flex-basis: 75%;
+     max-width: 75%;
+   }
+
+  .column.full--lg {
+    flex-basis: 100%;
+  }
+ }
+
+/* =============================================================================
+ * Animation Keyframes
+ * -------------------------------------------------------------------------- */
+
+ @keyframes error-appear-horiz {
+   0% {
+     transform: translateX(-30px) translateY(-50%);
+     opacity: 0;
+   }
+
+   100% {
+     transform: translateX(0) translateY(-50%);
+     opacity: 1;
+   }
+ }
+
+ @keyframes error-appear-vert {
+   0% {
+     transform: translateY(-20px);
+     opacity: 0;
+   }
+
+   100% {
+     transform: translateY(0);
+     opacity: 1;
+   }
+ }
 
 /* =============================================================================
  * General Elements
  * -------------------------------------------------------------------------- */
+::selection {
+  background-color: var(--color-amber-a700);
+  color: var(--color-black);
+}
+
+:focus {
+  outline: none;
+}
 
 html {
   box-sizing: border-box;
@@ -41,9 +135,35 @@ html {
   box-sizing: inherit;
 }
 
+.content {
+  min-width: var(--min-site-width);
+  max-width: var(--max-site-width);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  color: var(--color-light-blue-700);
+  text-decoration: none;
+}
+
+a:visited {
+  color: var(--color-deep-purple-700);
+}
+
+a:active {
+  color: var(--color-red-a400);
+}
+
 abbr {
   text-transform: lowercase;
   font-variant: small-caps;
+}
+
+pre {
+  margin: 0;
 }
 
 button {
@@ -58,19 +178,47 @@ button {
   border: 1px solid var(--color-yellow-a700);
   border-radius: .25em;
   transition: background 150ms ease-in;
+  position: relative;
 }
 
 button:hover {
   background: var(--color-yellow-a700);
 }
 
-input[type="checkbox"],
-input[type="radio"] {
-  margin-right: .5em;
+button:active {
+  box-shadow: var(--inset-shadow) var(--color-shadow-brown);
+  top: 1px;
+}
+
+button[disabled],
+button[disabled]:hover,
+button[disabled]:active {
+  background: var(--color-gray-100);
+  border-color: var(--color-gray-500);
+  color: var(--color-gray-500);
+  box-shadow: none;
+  cursor: not-allowed;
+  top: 0;
+  transition: none;
+}
+
+input[type="checkbox"] {
+  margin-top: .25rem;
+  margin-right: .5rem;
+}
+
+.label--checkbox {
+  display: flex;
+  padding-left: var(--textbox-padding-horiz);
+}
+
+button,
+.label--checkbox {
+  cursor: pointer;
 }
 
 input[type="text"] {
-  height: 3rem;
+  height: var(--textbox-height);
   padding-top: 0;
   padding-right: var(--textbox-padding-horiz);
   padding-left: var(--textbox-padding-horiz);
@@ -89,36 +237,71 @@ input[type="text"]:focus {
   border-color: var(--color-light-blue-700);
 }
 
-button,
-.label--checkbox,
-.label--radio {
-  cursor: pointer;
-}
-
-.label--radio + .label--radio {
-  margin-left: 2em;
+/**
+ * Prevent IE from showing the 'clear field' icon, because it makes the field
+ * look really ugly.
+ */
+input[type="text"]::-ms-clear {
+  display: none;
 }
 
 /* =============================================================================
  * Header
  * -------------------------------------------------------------------------- */
-header {
+.masthead {
   text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.site-logo {
+  margin-bottom: 1rem;
+}
+
+.site-title {
+  margin-top: 0;
+  margin-bottom: .5rem;
+}
+
+.site-description p {
+  margin: 0;
+}
+
+.site-description p + p {
+  margin-top: .5rem;
+}
+
+@media (min-width: 800px) {
+  .masthead {
+    display: flex;
+  }
+
+  .site-logo {
+    text-align: right;
+    margin-bottom: 0;
+  }
+
+  .masthead__copy {
+    text-align: left;
+  }
+
+  .masthead__copy {
+    padding-left: 2rem;
+  }
 }
 
 /* =============================================================================
  * App Container
  * -------------------------------------------------------------------------- */
-.container--app {
+.app-container {
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
 
  @media (min-width: 800px) {
-   .container--app {
+   .app-container {
      flex-direction: row;
    }
 }
@@ -126,9 +309,18 @@ header {
 /* =============================================================================
  * Config Form
  * -------------------------------------------------------------------------- */
+.form--config {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
 
-.form__row + .form__row {
-  margin-top: 1rem;
+.form__row {
+  margin-bottom: var(--form-row-margin-vert--small-up);
+}
+
+.form__row:last-child {
+  margin-bottom: 0;
 }
 
 .textbox {
@@ -138,34 +330,163 @@ header {
 
 .textbox label {
   visibility: hidden;
-  color: rgba(150, 150, 150, 0);
+  color: color(var(--color-gray-500) alpha(0%));
   pointer-events: none;
   position: absolute;
   font-size: calc(var(--textbox-padding-vert) * .95);
   top: .3rem;
   left: var(--textbox-padding-horiz);
   transition:
-    color 250ms ease-in,
-    visibility 250ms ease-in;
+    color 150ms ease-in,
+    visibility 150ms ease-in;
 }
 
-.textbox.textbox--has-text label {
+.textbox.is-required label::after {
+  visibility: hidden;
+  content: ' (Required)';
+  color: color(var(--color-light-blue-200) alpha(0%));
+  transition:
+    color 150ms ease-in,
+    visibility 150ms ease-in;
+}
+
+.textbox.has-text label {
   visibility: visible;
-  color: rgba(150, 150, 150, 1);
+  color: var(--color-gray-500);
 }
 
-.textbox input[type="text"] {
+.textbox.has-text label::after {
+  visibility: visible;
+  color: var(--color-light-blue-200);
+}
+
+.textbox input {
   width: 100%;
 }
 
-.textbox.textbox--has-text input[type="text"] {
+.textbox.has-text input {
   padding-top: calc(var(--textbox-padding-vert) + .25rem);
 }
 
+.textbox.has-error input,
+.textbox.has-error input:focus {
+  border-color: var(--color-red-a400);
+}
+
+.textbox.has-error input::placeholder {
+  color: var(--color-red-a200);
+}
+
+.textbox.has-error input:hover {
+  border-color: var(--color-red-a700);
+}
+
+.form__error {
+  pointer-events: none;
+  z-index: 1;
+  color: var(--color-brown-900);
+	width: 15rem;
+	position: absolute;
+	background: var(--color-red-50);
+	padding: 1em;
+	border: 1px solid var(--color-red-a400);
+  border-radius: .25rem;
+  box-shadow: var(--box-shadow) var(--color-shadow-brown);
+	left: 0;
+	top: calc(100% + .25rem);
+  transform:  translateY(-20px);
+  opacity: 0;
+  transition:
+    transform 150ms ease-in,
+    opacity 150ms ease-in;
+}
+
+.form__error::before,
+.form__error::after {
+	left: 25%;
+  bottom: 100%;
+	border: solid transparent;
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.form__error::before {
+	border-color: color(var(--color-red-50) alpha(0%));
+	border-bottom-color: var(--color-red-a400);
+	border-width: 10px;
+	margin-left: -10px;
+}
+
+.form__error::after {
+	border-color: color(var(--color-red-a400) alpha(0%));
+	border-bottom-color: var(--color-red-50);
+	border-width: 9px;
+	margin-left: -9px;
+}
+
+.textbox.has-error input:hover ~ .form__error,
+.textbox.has-error input:focus ~ .form__error {
+  pointer-events: auto;
+  animation: error-appear-vert 150ms ease-in;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (min-width: 480px) {
+  .form__row.half--md:nth-last-child(-n+2) {
+    margin-bottom: 0;
+  }
+
+  .form__error {
+  	left: 95%;
+  	top: 50%;
+    transform: translateX(-30px) translateY(-50%);
+  }
+
+  .form__error::before,
+  .form__error::after {
+  	top: 50%;
+    right: 100%;
+    bottom: auto;
+    left: auto;
+  	border: solid transparent;
+  	content: "";
+  	height: 0;
+  	width: 0;
+  	position: absolute;
+  	pointer-events: none;
+  }
+
+  .form__error::before {
+  	border-color: color(var(--color-red-50) alpha(0%));
+  	border-right-color: var(--color-red-a400);
+  	border-width: 10px;
+  	margin-top: -10px;
+  }
+
+  .form__error::after {
+  	border-color: color(var(--color-red-a400) alpha(0%));
+  	border-right-color: var(--color-red-50);
+  	border-width: 9px;
+  	margin-top: -9px;
+  }
+
+  .textbox.has-error input:hover ~ .form__error,
+  .textbox.has-error input:focus ~ .form__error {
+    pointer-events: auto;
+    animation: error-appear-horiz 150ms ease-in;
+    transform: translateX(0) translateY(-50%);
+    opacity: 1;
+  }
+}
+
 @media (min-width: 800px) {
-  .container--config {
-    flex-basis: calc(100% / 3);
-    flex-shrink: 0;
+  .form__row,
+  .form__row.half--md:nth-last-child(-n+2) {
+    margin-bottom: var(--form-row-margin-vert--large-up);
   }
 }
 
@@ -173,20 +494,30 @@ header {
  * Output Container
  * -------------------------------------------------------------------------- */
 
-.container--output {
-  font-size: .75rem;
+.output-container {
+  flex-grow: 1;
   padding: 0;
-  padding-left: 3rem;
+  margin-top: 3rem;
 }
 
-.container--isogram {
+.isogram-container {
   display: flex;
-  justify-content: center;
-  flex-basis: 100%;
+  align-items: center;
   background: var(--color-light-blue-50);
-  box-shadow: inset 0 2px 2px 0 color(var(--color-light-blue-900) alpha(10%));
+  box-shadow: var(--inset-shadow) var(--color-shadow-light-blue);
   border-radius: .25rem;
-  padding: 3rem 1.5rem;
+  padding: 2rem 1rem;
+  overflow-x: auto;
+  font-size: .7rem;
+}
+
+.isogram-container.has-error {
+  font-size: 1rem;
+  justify-content: center;
+  color: var(--color-gray-700);
+	background: var(--color-gray-100);
+  box-shadow: var(--inset-shadow) var(--color-shadow-blue-gray);
+	border: 1px solid var(--color-gray-500);
 }
 
 .isogram-code {
@@ -194,31 +525,88 @@ header {
   color: var(--color-blue-gray-900);
   white-space: pre-wrap;
   word-wrap: break-word;
+  overflow-x: auto;
 }
 
-.container--clipboard {
+.isogram-code.has-error {
+  font-family: var(--font-copy);
+}
+
+.clipboard-container {
   color: var(--color-gray-500);
-  padding: 1.5rem 1rem 1rem;
+  padding-top: 1.5rem;
   text-align: center;
-  font-size: 1rem;
 }
 
-.btn--clipboard {
-  margin-right: 1em;
+.clipboard__instructions {
+  font-style: italic;
+  margin-bottom: 0;
 }
 
 @media (min-width: 800px) {
-  .container--output {
-    flex-basis: calc(100% * (2 / 3));
+  .output-container {
+    padding-left: 2rem;
+    margin-top: 0;
+  }
+
+  /**
+   * 1: IE won't vertically center flexbox content unless it has an explicit
+   *    height. We can set it to 0 here since we've already set a min-height.
+   */
+  .isogram-container {
+    overflow-x: auto;
+    min-height: calc(
+      (var(--textbox-height) * 4)
+      + (var(--form-row-margin-vert--large-up) * 3)
+    );
+    padding: 2rem;
+    height: 0; /* 1 */
   }
 }
 
 /* =============================================================================
  * Footer
  * -------------------------------------------------------------------------- */
-
-footer {
-  margin-top: 3rem;
-  font-size: .75rem;
+.page-footer {
+  border-top: 1px solid #eee;
+  font-size: .875rem;
+  margin: 3rem 0;
+  padding-top: 3rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-footer__legal p {
+  margin-top: 0;
+  margin-bottom: .5rem;
+}
+
+.page-footer__social {
+  margin-top: 2rem;
+}
+
+@media (min-width: 800px) {
+  .page-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    margin: 2rem 0;
+    padding-top: 2rem
+  }
+
+  .page-footer__legal {
+    text-align: left;
+  }
+}
+
+/* =============================================================================
+ * Alert Box
+ * -------------------------------------------------------------------------- */
+.s-alert-box-inner {
+  text-align: center;
+}
+
+.s-alert-close {
+  display: none;
 }

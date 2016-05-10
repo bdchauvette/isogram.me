@@ -8,6 +8,11 @@
   margin: 0.5em;
   padding: 0.5em 0.75em;
   font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  transition: background-color 150ms ease-in;
+}
+
+.resp-sharing-button__link:first-child .resp-sharing-button {
+  margin-left: 0;
 }
 
 .resp-sharing-button a {

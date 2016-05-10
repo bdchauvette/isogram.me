@@ -1,16 +1,10 @@
 import React, { PropTypes } from 'react';
 import { branch } from 'baobab-react/higher-order';
-import isogram from 'isogram';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import classNames from 'classnames';
 
-import Maybe from '../components/Maybe';
+import ClipboardHelper from '../components/ClipboardHelper';
 
-function IsogramOutput({ isogramConfig }) {
-  const { letters } = isogramConfig;
-  const isogramCode = (isValidIsogram(letters))
-    ? isogram(letters, isogramConfig)
-    : null;
-
+function IsogramOutput({ analyticsCode, errors }) {
   const handleClick = (e) => {
     const numClicks = e.detail;
 
@@ -21,47 +15,48 @@ function IsogramOutput({ isogramConfig }) {
     }
   };
 
-  return (
-    <div className="container--output">
-      <div className="container--isogram" onClick={handleClick}>
-        <pre className="isogram-code">
-          {isogramCode}
-        </pre>
+  const hasErrors = Object.keys(errors).length;
+  let isogramContainerContent;
+
+  if (hasErrors) {
+    isogramContainerContent = (
+      <div className="isogram-code has-error">
+        Please fix the errors in the configuration form
       </div>
-      <Maybe condition={!!isogramCode}>
-        <div className="container--clipboard">
-          <CopyToClipboard
-            text={isogramCode}
-            onCopy={() => alert('Copied!')}
-          >
-            <button className="btn--clipboard">Copy to Clipboard</button>
-          </CopyToClipboard>
-          <span>or triple-click the colored area above to select the code</span>
-        </div>
-      </Maybe>
+    );
+  } else {
+    isogramContainerContent = (
+      <pre className="isogram-code">
+        {analyticsCode}
+      </pre>
+    );
+  }
+
+  const isogramContainerClassNames = {
+    'isogram-container': true,
+    'full': true,
+    'has-error': hasErrors,
+  };
+
+  return (
+    <div className="output-container column three-qtr--lg">
+      <div
+        className={classNames(isogramContainerClassNames)}
+        onClick={handleClick}
+      >
+        {isogramContainerContent}
+      </div>
+      <ClipboardHelper text={analyticsCode} />
     </div>
   );
 }
 
 IsogramOutput.propTypes = {
-  isogramConfig: PropTypes.shape({
-    letters: PropTypes.string,
-    id: PropTypes.string,
-    domain: PropTypes.string,
-    globalName: PropTypes.string,
-    minify: PropTypes.bool,
-    singleQuotes: PropTypes.bool,
-    track: PropTypes.bool,
-    color: PropTypes.bool,
-  }),
+  analyticsCode: PropTypes.string.isRequired,
+  errors: PropTypes.object,
 };
 
 export default branch({
-  isogramConfig: ['isogram'],
+  analyticsCode: 'analyticsCode',
+  errors: 'errors',
 }, IsogramOutput);
-
-// =============================================================================
-
-function isValidIsogram(text) {
-  return (text.length > 2 && text.length < 8);
-}
