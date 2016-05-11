@@ -18,9 +18,12 @@ const config = {
     vendor: [
       'baobab',
       'baobab-react',
+      'classnames',
       'isogram',
       'react',
+      'react-copy-to-clipboard',
       'react-dom',
+      'react-s-alert',
     ],
   },
   output: {
