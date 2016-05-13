@@ -1,4 +1,4 @@
-import Baobab, { monkey } from 'baobab';
+import Baobab from 'baobab';
 import isogram from 'isogram';
 
 import validate from './validate';
