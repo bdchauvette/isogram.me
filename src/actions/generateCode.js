@@ -47,7 +47,7 @@ function generateCode(tree) {
     // This means that we have to explicitly check if the global variable name
     // is valid, or the global name field might appear on the front end as valid
     // even when it's not.
-    if (!isVarName(globalName)) {
+    if (globalName && !isVarName(globalName)) {
       setError(tree, 'globalName', err);
     }
   }
