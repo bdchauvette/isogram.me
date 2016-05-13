@@ -20,6 +20,7 @@ const config = {
       'baobab-react',
       'classnames',
       'isogram',
+      'is-var-name',
       'react',
       'react-copy-to-clipboard',
       'react-dom',

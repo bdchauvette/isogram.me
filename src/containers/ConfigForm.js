@@ -33,6 +33,7 @@ export function ConfigForm({ dispatch, fields, errors }) {
         <Textbox
           label="Global Variable Name"
           value={fields.globalName}
+          error={errors.globalName}
           onChange={handleFormChange('globalName')}
         />
       </div>

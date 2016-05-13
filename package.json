@@ -46,6 +46,7 @@
     "eslint-plugin-jsx-a11y": "^1.0.4",
     "eslint-plugin-react": "^5.0.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "is-var-name": "^1.0.0",
     "isogram": "github:bdchauvette/isogram#script-tag",
     "normalize.css": "^4.1.1",
     "postcss": "^5.0.21",
