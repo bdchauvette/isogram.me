@@ -38,8 +38,9 @@ const isograms = [
 const randomIsogram = Math.floor(Math.random() * isograms.length);
 const isogramScript = isogram(isograms[randomIsogram], {
   id: 'UA-77741908-1',
+  scriptTag: true,
 });
-document.write(`<script>${isogramScript}</script>`);
+document.write(isogramScript);
 
 // Render the application
 const RootedApp = root(stateTree, App);
