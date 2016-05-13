@@ -5,10 +5,10 @@
   "private": true,
   "main": "build/app.js",
   "scripts": {
-    "clean": "rimraf build/**/*",
+    "clean": "rimraf dist/{js,css}/*",
     "test": "babel-tape-runner test/**/*.spec.js",
     "build": "npm run clean && cross-env NODE_ENV=production webpack -p",
-    "serve": "npm run clean && webpack-dev-server --compress --inline --content-base=."
+    "serve": "npm run clean && webpack-dev-server --compress --inline --content-base=dist"
   },
   "repository": {
     "type": "git",

@@ -7,15 +7,14 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const isProduction = (NODE_ENV === 'production');
 
 const extractStylesPlugin = new ExtractTextPlugin(
-  'main.css',
+  'css/main.css',
   { allChunks: true }
 );
 
 const config = {
-  // devtool: 'cheap-module-eval-source-map',
   entry: {
-    app: path.join(__dirname, 'src/index.js'),
-    vendor: [
+    'js/app': path.join(__dirname, 'src/index.js'),
+    'js/vendor': [
       'baobab',
       'baobab-react',
       'classnames',
@@ -28,9 +27,8 @@ const config = {
     ],
   },
   output: {
-    path: path.join(__dirname, 'build'),
-    filename: 'app.js',
-    publicPath: 'build',
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].js',
   },
   module: {
     loaders: [
@@ -44,7 +42,8 @@ const config = {
         test: /\.css?$/,
         loader: extractStylesPlugin.extract(
           'style-loader',
-          ['css-loader', 'postcss-loader']
+          ['css-loader', 'postcss-loader'],
+          { publicPath: '../css' }
         ),
         include: __dirname,
       },
@@ -53,7 +52,7 @@ const config = {
   postcss: () => [cssnext],
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+    new webpack.optimize.CommonsChunkPlugin('js/vendor', 'js/vendor.js'),
     extractStylesPlugin,
   ],
 };
